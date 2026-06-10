@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Isaac Mbuvi Mutua — IT Specialist & Data Analyst</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0D1B2A;
+      --teal:      #00C9A7;
+      --slate:     #4A5568;
+      --off-white: #E8EDF2;
+      --card-bg:   #132030;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--off-white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 6vw;
+      background: rgba(13,27,42,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,201,167,0.15);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+    .nav-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      object-fit: cover; object-position: top center;
+      border: 2px solid var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,201,167,0.15);
+      transition: box-shadow 0.2s;
+    }
+    .nav-logo:hover .nav-avatar { box-shadow: 0 0 0 4px rgba(0,201,167,0.35); }
+    .nav-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.95rem;
+      color: var(--teal); letter-spacing: 0.04em;
+    }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a {
+      color: var(--off-white); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500; opacity: 0.75;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    nav ul a:hover { opacity: 1; color: var(--teal); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 10rem 6vw 6rem;
+    }
+    .hero-inner {
+      max-width: 1000px; width: 100%;
+      display: flex; align-items: center; gap: 4rem;
+    }
+    .hero-text { flex: 1; }
+    .hero-photo-wrap {
+      flex-shrink: 0;
+      width: 260px; height: 260px; border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--teal);
+      box-shadow: 0 0 0 8px rgba(0,201,167,0.1), 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .hero-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+    }
+    @media (max-width: 720px) {
+      .hero-inner { flex-direction: column-reverse; gap: 2rem; align-items: flex-start; }
+      .hero-photo-wrap { width: 160px; height: 160px; }
+    }
+    .eyebrow {
+      font-size: 0.85rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 700; line-height: 1.05;
+      margin-bottom: 0.4rem;
+    }
+    .name-highlight {
+      display: inline;
+      background: linear-gradient(90deg, var(--teal), #5eead4, var(--teal));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    .hero-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--teal); opacity: 0.85;
+      margin-bottom: 1rem; font-weight: 600;
+    }
+    .tagline {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: rgba(232,237,242,0.7);
+      max-width: 600px; line-height: 1.7;
+      margin-bottom: 2.2rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.8rem;
+      border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--teal); color: var(--navy);
+      box-shadow: 0 4px 20px rgba(0,201,167,0.3);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 28px rgba(0,201,167,0.45); }
+    .btn-ghost {
+      border: 1.5px solid rgba(232,237,242,0.25); color: var(--off-white);
+    }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 6vw; }
+    .section-label {
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700; margin-bottom: 0.8rem; line-height: 1.15;
+    }
+    .section-divider {
+      width: 40px; height: 3px; background: var(--teal);
+      border-radius: 2px; margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 3.5rem;
+      align-items: start;
+    }
+    .about-text p { color: rgba(232,237,242,0.72); margin-bottom: 1rem; font-size: 0.97rem; }
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.5rem;
+    }
+    .skill-tag {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.25);
+      color: var(--teal); font-size: 0.78rem; font-weight: 500;
+      padding: 0.3rem 0.85rem; border-radius: 20px;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.12);
+      border-radius: var(--radius); padding: 1.4rem;
+      text-align: center;
+    }
+    .stat-card .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--teal);
+    }
+    .stat-card .lbl { font-size: 0.75rem; color: var(--slate); margin-top: 0.3rem; }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: rgba(0,0,0,0.18); }
+    .timeline { display: flex; flex-direction: column; gap: 2rem; }
+    .timeline-item {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.1);
+      border-left: 3px solid var(--teal);
+      border-radius: var(--radius); padding: 1.8rem 2rem;
+      transition: border-color 0.2s;
+    }
+    .timeline-item:hover { border-left-color: #5eead4; }
+    .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+    .timeline-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem; font-weight: 600;
+    }
+    .timeline-header .period {
+      font-size: 0.78rem; color: var(--teal);
+      background: rgba(0,201,167,0.1);
+      padding: 0.2rem 0.7rem; border-radius: 20px; white-space: nowrap;
+    }
+    .company { font-size: 0.85rem; color: var(--slate); margin-bottom: 1rem; }
+    .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .timeline-bullets li {
+      font-size: 0.88rem; color: rgba(232,237,242,0.72);
+      padding-left: 1.2rem; position: relative;
+    }
+    .timeline-bullets li::before {
+      content: "▸"; position: absolute; left: 0; color: var(--teal); font-size: 0.8rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.1);
+      border-radius: var(--radius); padding: 1.8rem;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .project-card:hover { border-color: rgba(0,201,167,0.45); transform: translateY(-4px); }
+    .project-icon { font-size: 1.6rem; }
+    .project-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; }
+    .project-card p { font-size: 0.87rem; color: rgba(232,237,242,0.65); flex: 1; }
+    .project-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .project-tag {
+      font-size: 0.72rem; background: rgba(0,201,167,0.1);
+      color: var(--teal); padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+
+    /* ── EDUCATION & PUBLICATIONS ── */
+    #education { background: rgba(0,0,0,0.18); }
+    .edu-pub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .edu-item, .pub-item {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.1);
+      border-radius: var(--radius); padding: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .edu-item h4, .pub-item h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.97rem; font-weight: 600; margin-bottom: 0.3rem;
+    }
+    .edu-item .inst, .pub-item .journal {
+      font-size: 0.82rem; color: var(--teal); margin-bottom: 0.2rem;
+    }
+    .edu-item .year { font-size: 0.78rem; color: var(--slate); }
+    .pub-item p { font-size: 0.82rem; color: rgba(232,237,242,0.65); margin-top: 0.4rem; }
+    .pub-link { color: var(--teal); font-size: 0.8rem; text-decoration: none; }
+    .pub-link:hover { text-decoration: underline; }
+
+    /* ── CONTACT ── */
+    .contact-inner { max-width: 560px; }
+    .contact-inner p { color: rgba(232,237,242,0.7); margin-bottom: 2rem; font-size: 0.97rem; }
+    .social-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.2rem;
+      border: 1.5px solid rgba(232,237,242,0.2);
+      border-radius: 8px; color: var(--off-white);
+      text-decoration: none; font-size: 0.88rem; font-weight: 500;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem 6vw;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.82rem; color: var(--slate);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .about-grid, .edu-pub-grid { grid-template-columns: 1fr; }
+      nav ul { gap: 1rem; }
+    }
+    @media (max-width: 420px) { nav ul { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .name-highlight { animation: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" class="nav-avatar" />
+      <span class="nav-name">Isaac M. Mutua</span>
+    </a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">IT Specialist &amp; Data Analyst · Machakos, Kenya</p>
+        <h1><span class="name-highlight">Isaac Mbuvi Mutua</span></h1>
+        <p class="hero-role">Full Stack Architect &amp; ICT Leader</p>
+        <p class="tagline">
+          Bridging technical infrastructure and strategic data intelligence — from high-resilience
+          disaster management systems in Level 5 hospitals to full-stack healthcare platforms
+          built in React and Node.js.
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label">About Me</p>
+        <h2>ICT strategy meets data science</h2>
+        <div class="section-divider"></div>
+        <p>
+          I'm a visionary ICT leader with a strong command over technical infrastructure and
+          advanced data science. I specialize in orchestrating high-resilience Disaster Management
+          Plans and architecting enterprise-grade communication hubs using SIP lines and PBX frameworks.
+        </p>
+        <p>
+          With experience spanning full-stack development, data pipelines, and healthcare ICT systems,
+          I bridge the gap between technical execution and strategic business intelligence. Currently
+          pursuing an MSc in Data Science at the Open University of Kenya.
+        </p>
+        <div class="skills-list">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Python / Django</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">SPSS / STATA</span>
+          <span class="skill-tag">Power BI</span>
+          <span class="skill-tag">Tableau</span>
+          <span class="skill-tag">Kobo Toolbox</span>
+          <span class="skill-tag">PBX / SIP</span>
+          <span class="skill-tag">LAN / WAN</span>
+          <span class="skill-tag">CCTV Systems</span>
+          <span class="skill-tag">RESTful APIs</span>
+        </div>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><div class="num">2+</div><div class="lbl">Years Professional Experience</div></div>
+        <div class="stat-card"><div class="num">L5</div><div class="lbl">Hospital DMP Delivered</div></div>
+        <div class="stat-card"><div class="num">1</div><div class="lbl">Peer-Reviewed Publication</div></div>
+        <div class="stat-card"><div class="num">MSc</div><div class="lbl">Data Science (In Progress)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Career</p>
+    <h2>Professional Experience</h2>
+    <div class="section-divider"></div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <h3>ICT Project Officer</h3>
+          <span class="period">March 2025 – Present</span>
+        </div>
+        <div class="company">Bob Grogan Consulting Ltd</div>
+        <ul class="timeline-bullets">
+          <li>Developed and spearheaded a comprehensive Disaster Management Plan for a Level 5 Hospital, strengthening institutional resilience and emergency protocols.</li>
+          <li>Architected and deployed SIP-line calling systems for corporate clients, enabling efficient wide-scale outreach and internal communication.</li>
+          <li>Engineered internal web platforms using React and Node.js to track healthcare project performance and telemedicine access.</li>
+          <li>Built data pipelines to migrate healthcare data from Kobo Toolbox to SPSS, facilitating the publication of systematic reviews in peer-reviewed journals.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <h3>ICT Assistant</h3>
+          <span class="period">Previous Role</span>
+        </div>
+        <div class="company">Makueni County Government</div>
+        <ul class="timeline-bullets">
+          <li>Provided Tier 1 &amp; 2 technical support, maintaining 99.99% system uptime across regional departments.</li>
+          <li>Executed IP configuration and setup for Kyocera network printers and POS terminals for revenue collection.</li>
+          <li>Directed the physical installation and configuration of CCTV surveillance systems for facility monitoring.</li>
+          <li>Managed LAN/WAN connectivity and maintained a meticulous ICT Asset Register for accountability.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">Selected Work</p>
+    <h2>Projects</h2>
+    <div class="section-divider"></div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-icon">🏥</div>
+        <h3>Machakos Level 5 Hospital — Disaster Management Plan</h3>
+        <p>Developed a comprehensive, institution-wide Disaster Management Plan strengthening emergency preparedness, resilience protocols, and ICT continuity for a major public hospital.</p>
+        <div class="project-tags">
+          <span class="project-tag">Strategic Planning</span>
+          <span class="project-tag">Healthcare ICT</span>
+          <span class="project-tag">Policy</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">📡</div>
+        <h3>Dagoretti Sub-County Telemedicine Project</h3>
+        <p>Spearheading the implementation of a corporate clinic telemedicine system at a Level IV hospital, enhancing patient access to specialist care through ICT-driven solutions.</p>
+        <div class="project-tags">
+          <span class="project-tag">Telemedicine</span>
+          <span class="project-tag">e-Health</span>
+          <span class="project-tag">React / Node.js</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">📊</div>
+        <h3>Healthcare Data Pipeline — Kobo → SPSS</h3>
+        <p>Built automated pipelines to migrate mobile-collected healthcare data from Kobo Toolbox into SPSS for advanced statistical analysis, supporting published systematic reviews.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">SPSS</span>
+          <span class="project-tag">Kobo Toolbox</span>
+          <span class="project-tag">Data Engineering</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">☎️</div>
+        <h3>Enterprise SIP / PBX Communication Hub</h3>
+        <p>Architected and deployed SIP-line calling systems and PBX frameworks for corporate clients, enabling high-volume outreach and streamlined internal communications.</p>
+        <div class="project-tags">
+          <span class="project-tag">SIP</span>
+          <span class="project-tag">PBX</span>
+          <span class="project-tag">Networking</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION & PUBLICATIONS -->
+  <section id="education">
+    <div class="edu-pub-grid">
+      <div>
+        <p class="section-label">Qualifications</p>
+        <h2>Education</h2>
+        <div class="section-divider"></div>
+
+        <div class="edu-item">
+          <h4>Master of Science — Data Science</h4>
+          <div class="inst">The Open University of Kenya</div>
+          <div class="year">2025 – Present</div>
+        </div>
+        <div class="edu-item">
+          <h4>Certificate — AI Essentials for Professionals</h4>
+          <div class="inst">Moringa School</div>
+          <div class="year">March – April 2026</div>
+        </div>
+        <div class="edu-item">
+          <h4>Bachelor of Science — Information Technology</h4>
+          <div class="inst">Meru University of Science &amp; Technology</div>
+          <div class="year">2019 – 2023</div>
+        </div>
+        <div class="edu-item">
+          <h4>Kenya Certificate of Secondary Education</h4>
+          <div class="inst">Mutomo Secondary School</div>
+          <div class="year">2015 – 2018</div>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-label">Research</p>
+        <h2>Publications</h2>
+        <div class="section-divider"></div>
+
+        <div class="pub-item">
+          <h4>Health System Factors Influencing Mobile Phone Platforms in Treatment Compliance</h4>
+          <div class="journal">International Journal of Research and Scientific Innovation (IJRSI)</div>
+          <p>
+            Kithuka, P. M., Kithuka, B. A. N., Mekala, E. K., Mutua, I. M., Idris, A., &amp; Omondi, E. O. (2025).
+            A systematic review examining how health system factors affect mobile phone platform effectiveness
+            for treatment compliance in non-communicable diseases across LMICs.
+          </p>
+          <br>
+          <a href="https://doi.org/10.51244/IJRSI.2025.121500 0105P" class="pub-link" target="_blank" rel="noopener">
+            View Publication →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-label">Get In Touch</p>
+      <h2>Let's connect</h2>
+      <div class="section-divider"></div>
+      <p>
+        Whether you have a healthcare ICT project, a data science collaboration, or just want
+        to talk tech — I'm always open to a conversation.
+      </p>
+      <div class="social-links">
+        <a href="mailto:isaacmbuvi084@gmail.com" class="social-btn">✉️ Email Me</a>
+        <a href="https://github.com/yourusername" class="social-btn" target="_blank" rel="noopener">🐙 GitHub</a>
+        <a href="https://linkedin.com/in/yourusername" class="social-btn" target="_blank" rel="noopener">💼 LinkedIn</a>
+        <a href="tel:+254714560246" class="social-btn">📞 +254 714 560 246</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Isaac Mbuvi Mutua · IT Specialist &amp; Data Analyst · Machakos, Kenya · Hosted on <a href="https://pages.github.com" style="color:var(--teal);text-decoration:none;">GitHub Pages</a></p>
+  </footer>
+
+</body>
+</html>
