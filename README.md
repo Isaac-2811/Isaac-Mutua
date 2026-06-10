@@ -24,7 +24,7 @@ Passionate about building scalable web applications, automation systems, IoT sol
 ### 📫 Contact Information
 
 * Phone: +254 714 560 245
-* WhatsApp: +254 714 562 465
+* WhatsApp: +254 714 560 246
 * Email: [isaacmbuvi084@gmail.com](mailto:isaacmbuvi084@gmail.com)
 * Alternative Email: [realsniper002@gmail.com](mailto:realsniper002@gmail.com)
 * Website: https://bghub.co.ke
