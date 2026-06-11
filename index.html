@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-adsense-account" content="ca-pub-3983572123467515">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Isaac Mbuvi Mutua — IT Specialist & Data Analyst</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
 
     :root {
       --navy:      #0D1B2A;
@@ -30,37 +31,72 @@
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 1.2rem 6vw;
-      background: rgba(13,27,42,0.88);
-      backdrop-filter: blur(12px);
+      padding: 0.9rem 5vw;
+      padding-left: max(5vw, env(safe-area-inset-left));
+      padding-right: max(5vw, env(safe-area-inset-right));
+      background: rgba(13,27,42,0.95);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(0,201,167,0.15);
     }
     .nav-logo {
-      display: flex; align-items: center; gap: 0.7rem;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none; z-index: 201;
     }
     .nav-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
+      width: 36px; height: 36px; border-radius: 50%;
       object-fit: cover; object-position: top center;
       border: 2px solid var(--teal);
       box-shadow: 0 0 0 3px rgba(0,201,167,0.15);
-      transition: box-shadow 0.2s;
     }
-    .nav-logo:hover .nav-avatar { box-shadow: 0 0 0 4px rgba(0,201,167,0.35); }
     .nav-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700; font-size: 0.95rem;
+      font-weight: 700; font-size: 0.9rem;
       color: var(--teal); letter-spacing: 0.04em;
     }
-    nav ul { list-style: none; display: flex; gap: 2rem; }
-    nav ul a {
+    /* Desktop links */
+    .nav-links { list-style: none; display: flex; gap: 1.6rem; }
+    .nav-links a {
       color: var(--off-white); text-decoration: none;
-      font-size: 0.9rem; font-weight: 500; opacity: 0.75;
+      font-size: 0.88rem; font-weight: 500; opacity: 0.75;
       transition: opacity 0.2s, color 0.2s;
     }
-    nav ul a:hover { opacity: 1; color: var(--teal); }
+    .nav-links a:hover { opacity: 1; color: var(--teal); }
+
+    /* Hamburger button */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; background: none; border: none; cursor: pointer;
+      padding: 6px; z-index: 201;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--off-white); border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .mobile-nav {
+      display: none; position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(13,27,42,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 199;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: var(--off-white); text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem; font-weight: 700; opacity: 0.8;
+      transition: color 0.2s, opacity 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--teal); opacity: 1; }
 
     /* ── HERO ── */
     .hero {
@@ -73,20 +109,180 @@
       display: flex; align-items: center; gap: 4rem;
     }
     .hero-text { flex: 1; }
-    .hero-photo-wrap {
+    /* ── ANIMATED HERO PHOTO ── */
+    .hero-photo-scene {
       flex-shrink: 0;
-      width: 260px; height: 260px; border-radius: 50%;
-      overflow: hidden;
+      position: relative;
+      width: 300px; height: 300px;
+    }
+
+    /* Outer slow-spin orbit ring */
+    .orbit-ring {
+      position: absolute; inset: -22px;
+      border-radius: 50%;
+      border: 2px dashed rgba(0,201,167,0.35);
+      animation: orbit-spin 18s linear infinite;
+    }
+    /* Dot that rides the orbit */
+    .orbit-ring::before {
+      content: '';
+      position: absolute; top: 50%; left: -6px;
+      width: 12px; height: 12px;
+      background: var(--teal); border-radius: 50%;
+      box-shadow: 0 0 12px var(--teal);
+      transform: translateY(-50%);
+    }
+    @keyframes orbit-spin { to { transform: rotate(360deg); } }
+
+    /* Second inner orbit, opposite direction */
+    .orbit-ring2 {
+      position: absolute; inset: -44px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,201,167,0.15);
+      animation: orbit-spin2 28s linear infinite;
+    }
+    .orbit-ring2::after {
+      content: '';
+      position: absolute; bottom: 50%; right: -5px;
+      width: 9px; height: 9px;
+      background: #5eead4; border-radius: 50%;
+      box-shadow: 0 0 8px #5eead4;
+      transform: translateY(50%);
+    }
+    @keyframes orbit-spin2 { to { transform: rotate(-360deg); } }
+
+    /* Pulsing glow rings behind the photo */
+    .glow-pulse {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: transparent;
+      box-shadow: 0 0 0 0 rgba(0,201,167,0.5);
+      animation: glow-expand 3s ease-out infinite;
+    }
+    @keyframes glow-expand {
+      0%   { box-shadow: 0 0 0 0   rgba(0,201,167,0.45); }
+      70%  { box-shadow: 0 0 0 28px rgba(0,201,167,0);   }
+      100% { box-shadow: 0 0 0 0   rgba(0,201,167,0);    }
+    }
+
+    /* Photo circle itself — floats up and down */
+    .hero-photo-wrap {
+      position: absolute; inset: 0;
+      border-radius: 50%; overflow: hidden;
       border: 3px solid var(--teal);
-      box-shadow: 0 0 0 8px rgba(0,201,167,0.1), 0 20px 60px rgba(0,0,0,0.4);
+      box-shadow:
+        0 0 0 8px rgba(0,201,167,0.12),
+        0 24px 60px rgba(0,0,0,0.5);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0px);   }
+      50%      { transform: translateY(-14px); }
     }
     .hero-photo-wrap img {
       width: 100%; height: 100%;
       object-fit: cover; object-position: top center;
+      animation: subtle-zoom 12s ease-in-out infinite;
     }
-    @media (max-width: 720px) {
-      .hero-inner { flex-direction: column-reverse; gap: 2rem; align-items: flex-start; }
-      .hero-photo-wrap { width: 160px; height: 160px; }
+    @keyframes subtle-zoom {
+      0%,100% { transform: scale(1);    }
+      50%      { transform: scale(1.06); }
+    }
+
+    /* Shimmer sweep over the image */
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 50%;
+      background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.12) 50%,
+        transparent 70%
+      );
+      background-size: 200% 100%;
+      animation: shimmer-sweep 4s ease-in-out infinite;
+    }
+    @keyframes shimmer-sweep {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Floating tech badges around the photo */
+    .tech-badge {
+      position: absolute;
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.35);
+      border-radius: 20px; padding: 0.3rem 0.75rem;
+      font-size: 0.72rem; font-weight: 600; color: var(--teal);
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      animation: badge-float 5s ease-in-out infinite;
+    }
+    .tech-badge:nth-child(3) { top: 8%;  right: -18%; animation-delay: 0s;   animation-duration: 5.5s; }
+    .tech-badge:nth-child(4) { bottom: 18%; right: -22%; animation-delay: 1s;   animation-duration: 6s;   }
+    .tech-badge:nth-child(5) { top: 30%; left: -22%; animation-delay: 2s;   animation-duration: 5s;   }
+    .tech-badge:nth-child(6) { bottom: 5%;  left: -10%; animation-delay: 0.5s; animation-duration: 6.5s; }
+    @keyframes badge-float {
+      0%,100% { transform: translateY(0);   }
+      50%      { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      /* Hero — stack photo above text, centred */
+      .hero { padding: 7rem 5vw 4rem; min-height: auto; }
+      .hero-inner {
+        flex-direction: column; align-items: center;
+        gap: 2.5rem; text-align: center;
+      }
+      .hero-text { order: 2; }
+      .hero-photo-scene {
+        order: 1;
+        width: 200px; height: 200px;
+        margin: 0 auto;
+      }
+      .tech-badge { display: none; }
+      .hero-ctas { justify-content: center; }
+      .tagline { max-width: 100%; }
+
+      /* About */
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+
+      /* KPI row */
+      .kpi-row { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      .kpi-val { font-size: 1.3rem; }
+
+      /* Charts */
+      .charts-grid { grid-template-columns: 1fr !important; }
+      .chart-card[style*="span 2"] { grid-column: span 1 !important; }
+
+      /* Education */
+      .edu-pub-grid { grid-template-columns: 1fr; }
+
+      /* Dash tabs scroll */
+      .dash-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.4rem; -webkit-overflow-scrolling: touch; }
+      .dash-tab { flex-shrink: 0; }
+
+      /* Data table scroll */
+      .data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Section padding */
+      section { padding: 4rem 5vw; }
+
+      /* Projects */
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 420px) {
+      h1 { font-size: 2.2rem; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .hero-photo-scene { width: 170px; height: 170px; }
+      .stat-card .num { font-size: 1.8rem; }
+      .btn { padding: 0.65rem 1.3rem; font-size: 0.85rem; }
     }
     .eyebrow {
       font-size: 0.85rem; letter-spacing: 0.18em;
@@ -291,6 +487,138 @@
       .name-highlight { animation: none; }
       * { transition: none !important; }
     }
+
+    /* ── ANALYTICS ── */
+    #analytics { background: rgba(0,0,0,0.18); }
+    .tool-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem; margin-bottom: 3.5rem;
+    }
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,201,167,0.12);
+      border-radius: var(--radius); padding: 1.4rem 1rem;
+      text-align: center; cursor: default;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tool-card:hover { transform: translateY(-3px); border-color: rgba(0,201,167,0.4); }
+    .tool-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
+    .tool-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem; font-weight: 600; color: var(--off-white);
+      margin-bottom: 0.25rem;
+    }
+    .tool-level {
+      font-size: 0.72rem; color: var(--slate);
+    }
+    .tool-bar-wrap {
+      height: 3px; background: rgba(255,255,255,0.08);
+      border-radius: 2px; margin-top: 0.6rem; overflow: hidden;
+    }
+    .tool-bar { height: 100%; background: var(--teal); border-radius: 2px; }
+
+    .charts-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--off-white); margin-bottom: 1.2rem;
+    }
+    .dash-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .dash-tab {
+      padding: 0.5rem 1.1rem; border-radius: 20px;
+      border: 1.5px solid rgba(0,201,167,0.2);
+      background: transparent; color: rgba(232,237,242,0.6);
+      font-size: 0.82rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dash-tab.active { background: rgba(0,201,167,0.15); border-color: var(--teal); color: var(--teal); }
+    .dash-tab:hover { border-color: var(--teal); color: var(--teal); }
+
+    .dashboard { display: none; }
+    .dashboard.active-dash { display: block; }
+
+    .dash-meta {
+      font-size: 0.75rem; color: var(--slate);
+      margin-bottom: 1.2rem; letter-spacing: 0.02em;
+    }
+
+    /* KPI row */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.12);
+      border-radius: var(--radius); padding: 1.1rem 1rem;
+    }
+    .kpi-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700; color: var(--teal); line-height: 1;
+    }
+    .kpi-lbl { font-size: 0.75rem; color: var(--slate); margin: 0.3rem 0 0.4rem; }
+    .kpi-delta { font-size: 0.72rem; font-weight: 500; }
+    .kpi-delta.up { color: #4ade80; }
+    .kpi-delta.neutral { color: var(--slate); }
+
+    /* Charts grid */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+    .chart-card {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.1);
+      border-radius: var(--radius); padding: 1.3rem;
+    }
+    .chart-card h4 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 600;
+      color: rgba(232,237,242,0.8); margin-bottom: 1rem;
+    }
+    .chart-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+    .chart-top h4 { margin-bottom: 0; }
+    .filter-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .flt {
+      padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.72rem;
+      border: 1px solid rgba(0,201,167,0.2); background: transparent;
+      color: rgba(232,237,242,0.55); cursor: pointer; transition: all 0.15s;
+    }
+    .flt.active { background: rgba(0,201,167,0.15); border-color: var(--teal); color: var(--teal); }
+    .flt:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* Data table */
+    .data-table-wrap {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.1);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .dt-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem; font-weight: 600; color: rgba(232,237,242,0.8);
+    }
+    .dt-live { color: #f87171; font-size: 0.72rem; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .data-table th {
+      text-align: left; padding: 0.6rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      color: var(--slate); font-weight: 500; font-size: 0.73rem;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .data-table td {
+      padding: 0.6rem 1.2rem; color: rgba(232,237,242,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(0,201,167,0.04); }
+    .badge-ok {
+      background: rgba(74,222,128,0.15); color: #4ade80;
+      padding: 0.15rem 0.6rem; border-radius: 10px; font-size: 0.72rem;
+    }
+    .badge-warn {
+      background: rgba(251,191,36,0.15); color: #fbbf24;
+      padding: 0.15rem 0.6rem; border-radius: 10px; font-size: 0.72rem;
+    }
+
+    @media (max-width: 720px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-card[style*="span 2"] { grid-column: span 1 !important; }
+      .tool-grid { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -301,14 +629,28 @@
       <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" class="nav-avatar" />
       <span class="nav-name">Isaac M. Mutua</span>
     </a>
-    <ul>
+    <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#analytics">Analytics</a></li>
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#about"       onclick="closeNav()">About</a>
+    <a href="#experience"  onclick="closeNav()">Experience</a>
+    <a href="#projects"    onclick="closeNav()">Projects</a>
+    <a href="#analytics"   onclick="closeNav()">Analytics</a>
+    <a href="#education"   onclick="closeNav()">Education</a>
+    <a href="#contact"     onclick="closeNav()">Contact</a>
+  </div>
 
   <section class="hero">
     <div class="hero-inner">
@@ -326,8 +668,17 @@
           <a href="#contact" class="btn btn-ghost">Get In Touch</a>
         </div>
       </div>
-      <div class="hero-photo-wrap">
-        <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" />
+      <div class="hero-photo-scene">
+        <div class="orbit-ring2"></div>
+        <div class="orbit-ring"></div>
+        <div class="glow-pulse"></div>
+        <div class="hero-photo-wrap">
+          <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" />
+        </div>
+        <span class="tech-badge">⚡ Power BI</span>
+        <span class="tech-badge">🐍 Python</span>
+        <span class="tech-badge">☁️ Node.js</span>
+        <span class="tech-badge">📊 SPSS</span>
       </div>
     </div>
   </section>
@@ -466,6 +817,190 @@
     </div>
   </section>
 
+  <!-- ANALYTICS -->
+  <section id="analytics">
+    <p class="section-label">Data &amp; Analytics</p>
+    <h2>Tools &amp; Dashboards</h2>
+    <div class="section-divider"></div>
+
+    <!-- Tool proficiency cards -->
+    <div class="tool-grid">
+      <div class="tool-card">
+        <span class="tool-icon">📊</span>
+        <div class="tool-name">Tableau</div>
+        <div class="tool-level">Advanced</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:85%"></div></div>
+      </div>
+      <div class="tool-card">
+        <span class="tool-icon">⚡</span>
+        <div class="tool-name">Power BI</div>
+        <div class="tool-level">Advanced</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:85%"></div></div>
+      </div>
+      <div class="tool-card">
+        <span class="tool-icon">🔬</span>
+        <div class="tool-name">SPSS</div>
+        <div class="tool-level">Expert</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:92%"></div></div>
+      </div>
+      <div class="tool-card">
+        <span class="tool-icon">📈</span>
+        <div class="tool-name">STATA</div>
+        <div class="tool-level">Advanced</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:80%"></div></div>
+      </div>
+      <div class="tool-card">
+        <span class="tool-icon">🐍</span>
+        <div class="tool-name">Python</div>
+        <div class="tool-level">Expert</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:90%"></div></div>
+      </div>
+      <div class="tool-card">
+        <span class="tool-icon">🌐</span>
+        <div class="tool-name">Web Charts</div>
+        <div class="tool-level">Advanced</div>
+        <div class="tool-bar-wrap"><div class="tool-bar" style="width:88%"></div></div>
+      </div>
+    </div>
+
+    <!-- Dashboard tabs -->
+    <p class="charts-heading">Interactive Analytics Dashboards</p>
+    <div class="dash-tabs">
+      <button class="dash-tab active" onclick="showDash('kobo')">🗂️ Kobo Toolbox</button>
+      <button class="dash-tab" onclick="showDash('ict')">🖥️ ICT Infrastructure</button>
+      <button class="dash-tab" onclick="showDash('ncd')">💊 NCD Compliance</button>
+      <button class="dash-tab" onclick="showDash('tele')">📡 Telemedicine</button>
+    </div>
+
+    <!-- ── DASHBOARD 1: Kobo Toolbox ── -->
+    <div id="dash-kobo" class="dashboard active-dash">
+      <div class="dash-meta">📍 Source: Kobo Toolbox → SPSS Pipeline &nbsp;|&nbsp; 🏥 Bob Grogan Consulting Ltd &nbsp;|&nbsp; 🔄 <span id="rt-label">Live updating</span></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-val" id="kpi-total">3,420</div><div class="kpi-lbl">Total Records</div><div class="kpi-delta up">↑ 12% vs last month</div></div>
+        <div class="kpi-card"><div class="kpi-val" id="kpi-complete">94.2%</div><div class="kpi-lbl">Completion Rate</div><div class="kpi-delta up">↑ 3.1 pts</div></div>
+        <div class="kpi-card"><div class="kpi-val" id="kpi-facilities">18</div><div class="kpi-lbl">Facilities Reporting</div><div class="kpi-delta up">↑ 2 new</div></div>
+        <div class="kpi-card"><div class="kpi-val" id="kpi-today">47</div><div class="kpi-lbl">Submissions Today</div><div class="kpi-delta up">🔴 Live</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card" style="grid-column:span 2">
+          <div class="chart-top"><h4>Monthly Data Submissions by Form Type</h4>
+            <div class="filter-row">
+              <button class="flt active" onclick="filterKobo('all',this)">All Forms</button>
+              <button class="flt" onclick="filterKobo('patient',this)">Patient Intake</button>
+              <button class="flt" onclick="filterKobo('followup',this)">Follow-Up</button>
+              <button class="flt" onclick="filterKobo('outcome',this)">Outcomes</button>
+            </div>
+          </div>
+          <canvas id="chart-kobo-bar" height="90"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Submission Status Breakdown</h4>
+          <canvas id="chart-kobo-pie"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Data Quality Score by Facility (%)</h4>
+          <canvas id="chart-kobo-qual"></canvas>
+        </div>
+      </div>
+      <div class="data-table-wrap">
+        <div class="dt-header"><span>Recent Submissions — Last 7 Days</span><span class="dt-live">● LIVE</span></div>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Facility</th><th>Form Type</th><th>Submissions</th><th>Complete</th><th>Status</th></tr></thead>
+          <tbody id="kobo-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD 2: ICT Infrastructure ── -->
+    <div id="dash-ict" class="dashboard">
+      <div class="dash-meta">📍 Source: ICT Asset Register &nbsp;|&nbsp; 🏛️ Makueni County Government &nbsp;|&nbsp; 📅 Updated: June 2026</div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-val">247</div><div class="kpi-lbl">Total Assets</div><div class="kpi-delta up">↑ 14 added Q2</div></div>
+        <div class="kpi-card"><div class="kpi-val">99.9%</div><div class="kpi-lbl">Network Uptime</div><div class="kpi-delta up">↑ SLA met</div></div>
+        <div class="kpi-card"><div class="kpi-val">34</div><div class="kpi-lbl">CCTV Cameras</div><div class="kpi-delta neutral">→ Stable</div></div>
+        <div class="kpi-card"><div class="kpi-val">6</div><div class="kpi-lbl">PBX Lines Active</div><div class="kpi-delta up">↑ 2 new</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Asset Distribution by Category</h4>
+          <canvas id="chart-ict-donut"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Network Uptime by Department (%)</h4>
+          <canvas id="chart-ict-bar"></canvas>
+        </div>
+        <div class="chart-card" style="grid-column:span 2">
+          <h4>Incident Tickets Resolved vs Open — 2025/26</h4>
+          <canvas id="chart-ict-line" height="80"></canvas>
+        </div>
+      </div>
+      <div class="data-table-wrap">
+        <div class="dt-header"><span>Asset Register — Top Items</span></div>
+        <table class="data-table">
+          <thead><tr><th>Asset ID</th><th>Category</th><th>Location</th><th>Status</th><th>Last Service</th><th>Condition</th></tr></thead>
+          <tbody>
+            <tr><td>MK-001</td><td>Kyocera Printer</td><td>Revenue Dept</td><td><span class="badge-ok">Active</span></td><td>Apr 2026</td><td>Good</td></tr>
+            <tr><td>MK-014</td><td>CCTV Camera</td><td>Main Gate</td><td><span class="badge-ok">Active</span></td><td>Mar 2026</td><td>Good</td></tr>
+            <tr><td>MK-028</td><td>POS Terminal</td><td>Cashier 3</td><td><span class="badge-ok">Active</span></td><td>May 2026</td><td>Good</td></tr>
+            <tr><td>MK-035</td><td>LAN Switch</td><td>Server Room</td><td><span class="badge-warn">Maintenance</span></td><td>Feb 2026</td><td>Fair</td></tr>
+            <tr><td>MK-042</td><td>PBX Unit</td><td>Admin Block</td><td><span class="badge-ok">Active</span></td><td>Jun 2026</td><td>Excellent</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD 3: NCD Compliance ── -->
+    <div id="dash-ncd" class="dashboard">
+      <div class="dash-meta">📍 Source: SPSS Statistical Analysis &nbsp;|&nbsp; 📄 IJRSI Publication 2025 &nbsp;|&nbsp; 🌍 LMICs Systematic Review</div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-val">2,841</div><div class="kpi-lbl">Patients Studied</div><div class="kpi-delta neutral">Systematic review</div></div>
+        <div class="kpi-card"><div class="kpi-val">68.4%</div><div class="kpi-lbl">Avg Compliance Rate</div><div class="kpi-delta up">↑ 11% vs control</div></div>
+        <div class="kpi-card"><div class="kpi-val">14</div><div class="kpi-lbl">Studies Included</div><div class="kpi-delta neutral">PRISMA filtered</div></div>
+        <div class="kpi-card"><div class="kpi-val">p&lt;0.05</div><div class="kpi-lbl">Statistical Significance</div><div class="kpi-delta up">✓ Significant</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Compliance Rate by Platform — Urban vs Rural</h4>
+          <canvas id="chart-ncd-radar"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Compliance Improvement (%) — Before vs After Intervention</h4>
+          <canvas id="chart-ncd-bar"></canvas>
+        </div>
+        <div class="chart-card" style="grid-column:span 2">
+          <h4>Trend: Mobile Platform Adoption in LMICs (2018–2025)</h4>
+          <canvas id="chart-ncd-trend" height="80"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD 4: Telemedicine ── -->
+    <div id="dash-tele" class="dashboard">
+      <div class="dash-meta">📍 Source: Dagoretti Sub-County Hospital &nbsp;|&nbsp; 🏥 Level IV Telemedicine Project &nbsp;|&nbsp; 🔄 <span>Live</span></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-val" id="kpi-consults">1,284</div><div class="kpi-lbl">Total Consultations</div><div class="kpi-delta up">↑ 23% MoM</div></div>
+        <div class="kpi-card"><div class="kpi-val">87%</div><div class="kpi-lbl">Patient Satisfaction</div><div class="kpi-delta up">↑ 4 pts</div></div>
+        <div class="kpi-card"><div class="kpi-val">14 min</div><div class="kpi-lbl">Avg Wait Time</div><div class="kpi-delta up">↓ 6 min</div></div>
+        <div class="kpi-card"><div class="kpi-val" id="kpi-today2">12</div><div class="kpi-lbl">Today's Sessions</div><div class="kpi-delta up">🔴 Live</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card" style="grid-column:span 2">
+          <h4>Weekly Consultation Volume by Specialty</h4>
+          <canvas id="chart-tele-bar" height="90"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Consultation Outcome Distribution</h4>
+          <canvas id="chart-tele-pie"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Patient Access Mode</h4>
+          <canvas id="chart-tele-access"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <!-- EDUCATION & PUBLICATIONS -->
   <section id="education">
     <div class="edu-pub-grid">
@@ -542,5 +1077,260 @@
     <p>© 2026 Isaac Mbuvi Mutua · IT Specialist &amp; Data Analyst · Machakos, Kenya · Hosted on <a href="https://pages.github.com" style="color:var(--teal);text-decoration:none;">GitHub Pages</a></p>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script>
+  // ── Global defaults ──────────────────────────────────────────
+  const C = { teal:'#00C9A7', teal2:'rgba(0,201,167,0.18)', teal3:'rgba(0,201,167,0.7)',
+    mint:'rgba(94,234,212,0.75)', mint2:'rgba(94,234,212,0.12)',
+    grid:'rgba(255,255,255,0.06)', txt:'rgba(232,237,242,0.65)',
+    green:'rgba(74,222,128,0.75)', amber:'rgba(251,191,36,0.75)',
+    blue:'rgba(96,165,250,0.75)', purple:'rgba(167,139,250,0.75)' };
+  Chart.defaults.color = C.txt;
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.font.size = 11;
+  const scaleOpts = (yCallback) => ({
+    x:{ grid:{color:C.grid}, ticks:{color:C.txt} },
+    y:{ grid:{color:C.grid}, ticks:{color:C.txt, callback: yCallback||undefined } }
+  });
+
+  // ── Tab switcher ─────────────────────────────────────────────
+  function showDash(id) {
+    document.querySelectorAll('.dashboard').forEach(d=>d.classList.remove('active-dash'));
+    document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('dash-'+id).classList.add('active-dash');
+    event.target.classList.add('active');
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // DASHBOARD 1 — KOBO TOOLBOX
+  // ═══════════════════════════════════════════════════════════════
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const koboData = {
+    all:     { patient:[142,178,205,190,225,270,248,295,265,330,295,362],
+               followup:[88,105,122,100,130,152,140,168,152,185,170,205],
+               outcome:[42,55,60,52,65,78,70,85,75,95,88,110] },
+    patient: { patient:[142,178,205,190,225,270,248,295,265,330,295,362], followup:null, outcome:null },
+    followup:{ patient:null, followup:[88,105,122,100,130,152,140,168,152,185,170,205], outcome:null },
+    outcome: { patient:null, followup:null, outcome:[42,55,60,52,65,78,70,85,75,95,88,110] },
+  };
+  const koboBar = new Chart(document.getElementById('chart-kobo-bar'), {
+    type:'bar',
+    data:{ labels:months, datasets:[
+      { label:'Patient Intake', data:koboData.all.patient, backgroundColor:'rgba(0,201,167,0.8)', borderRadius:4 },
+      { label:'Follow-Up',      data:koboData.all.followup, backgroundColor:'rgba(94,234,212,0.65)', borderRadius:4 },
+      { label:'Outcomes',       data:koboData.all.outcome, backgroundColor:'rgba(74,222,128,0.6)', borderRadius:4 },
+    ]},
+    options:{ responsive:true, plugins:{ legend:{labels:{color:C.txt}} }, scales:scaleOpts() }
+  });
+
+  function filterKobo(key, btn) {
+    document.querySelectorAll('.flt').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const d = koboData[key];
+    koboBar.data.datasets[0].data = d.patient || new Array(12).fill(0);
+    koboBar.data.datasets[1].data = d.followup || new Array(12).fill(0);
+    koboBar.data.datasets[2].data = d.outcome || new Array(12).fill(0);
+    koboBar.update();
+  }
+
+  new Chart(document.getElementById('chart-kobo-pie'), {
+    type:'doughnut',
+    data:{ labels:['Complete','Partial','Missing','Rejected'],
+      datasets:[{ data:[78,12,6,4],
+        backgroundColor:['rgba(0,201,167,0.85)','rgba(94,234,212,0.7)','rgba(251,191,36,0.7)','rgba(248,113,113,0.7)'],
+        borderColor:'#132030', borderWidth:2 }]},
+    options:{ cutout:'68%', plugins:{
+      legend:{ position:'bottom', labels:{color:C.txt,padding:10,boxWidth:10} }
+    }}
+  });
+
+  new Chart(document.getElementById('chart-kobo-qual'), {
+    type:'bar',
+    data:{ labels:['Machakos L5','Dagoretti L4','Makueni Ref','Mutomo HC','Kibwezi HC','Kathiani HC'],
+      datasets:[{ label:'Quality Score (%)',
+        data:[96,91,88,84,79,93],
+        backgroundColor: [96,91,88,84,79,93].map(v =>
+          v>=90 ? 'rgba(0,201,167,0.85)' : v>=80 ? 'rgba(251,191,36,0.75)' : 'rgba(248,113,113,0.7)'),
+        borderRadius:4 }]},
+    options:{ indexAxis:'y', responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{ x:{min:60,max:100, grid:{color:C.grid}, ticks:{color:C.txt,callback:v=>v+'%'}},
+               y:{grid:{color:C.grid},ticks:{color:C.txt}} }}
+  });
+
+  // Live table rows
+  const facilities = ['Machakos L5','Dagoretti L4','Makueni Ref','Mutomo HC','Kibwezi HC','Kathiani HC','Mbooni HC'];
+  const formTypes  = ['Patient Intake','Follow-Up','Outcome','Screening'];
+  function makeRow(daysAgo) {
+    const d = new Date(); d.setDate(d.getDate()-daysAgo);
+    const dateStr = d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const fac  = facilities[Math.floor(Math.random()*facilities.length)];
+    const form = formTypes[Math.floor(Math.random()*formTypes.length)];
+    const subs = Math.floor(Math.random()*60)+20;
+    const comp = Math.floor(Math.random()*15)+85;
+    const status = comp>=95 ? '<span class="badge-ok">Complete</span>' : '<span class="badge-warn">Partial</span>';
+    return `<tr><td>${dateStr}</td><td>${fac}</td><td>${form}</td><td>${subs}</td><td>${comp}%</td><td>${status}</td></tr>`;
+  }
+  function refreshTable() {
+    document.getElementById('kobo-tbody').innerHTML = [0,0,1,2,3,4,5,6].map(makeRow).join('');
+  }
+  refreshTable();
+
+  // Simulate live KPI ticking
+  let totalRec = 3420, todaySubs = 47;
+  setInterval(() => {
+    if(Math.random()>0.5){ todaySubs += Math.floor(Math.random()*3)+1; totalRec += Math.floor(Math.random()*3)+1; }
+    document.getElementById('kpi-total').textContent = totalRec.toLocaleString();
+    document.getElementById('kpi-today').textContent = todaySubs;
+    if(Math.random()>0.7) refreshTable();
+  }, 4000);
+
+  // ═══════════════════════════════════════════════════════════════
+  // DASHBOARD 2 — ICT INFRASTRUCTURE
+  // ═══════════════════════════════════════════════════════════════
+  new Chart(document.getElementById('chart-ict-donut'), {
+    type:'doughnut',
+    data:{ labels:['Network (LAN/WAN)','CCTV Systems','PBX/SIP Lines','POS Terminals','Servers/UPS','Printers'],
+      datasets:[{ data:[72,34,18,28,47,48],
+        backgroundColor:['rgba(0,201,167,0.85)','rgba(94,234,212,0.75)','rgba(96,165,250,0.75)',
+          'rgba(167,139,250,0.7)','rgba(251,191,36,0.7)','rgba(74,222,128,0.65)'],
+        borderColor:'#132030', borderWidth:2 }]},
+    options:{ cutout:'60%', plugins:{
+      legend:{ position:'bottom', labels:{color:C.txt,padding:8,boxWidth:10} }
+    }}
+  });
+
+  new Chart(document.getElementById('chart-ict-bar'), {
+    type:'bar',
+    data:{ labels:['Finance','Registry','ICT Dept','HR','Health Dept','Legal','Admin'],
+      datasets:[{ label:'Uptime %',
+        data:[99.9,99.4,99.99,98.8,99.7,98.2,99.5],
+        backgroundColor: [99.9,99.4,99.99,98.8,99.7,98.2,99.5].map(v=>
+          v>=99.5?'rgba(0,201,167,0.85)':v>=99?'rgba(251,191,36,0.75)':'rgba(248,113,113,0.7)'),
+        borderRadius:4 }]},
+    options:{ responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{ x:{grid:{color:C.grid},ticks:{color:C.txt}},
+        y:{min:97,max:100, grid:{color:C.grid}, ticks:{color:C.txt,callback:v=>v+'%'}} }}
+  });
+
+  const ictMonths = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+  new Chart(document.getElementById('chart-ict-line'), {
+    type:'line',
+    data:{ labels:ictMonths, datasets:[
+      { label:'Resolved',
+        data:[22,28,19,31,25,18,30,35,28,40,33,38],
+        borderColor:C.teal, backgroundColor:C.teal2, fill:true, tension:0.4, pointRadius:4 },
+      { label:'Open',
+        data:[8,5,9,4,7,10,5,3,6,4,5,3],
+        borderColor:'rgba(248,113,113,0.75)', backgroundColor:'rgba(248,113,113,0.08)',
+        fill:true, tension:0.4, pointRadius:4 }
+    ]},
+    options:{ responsive:true, plugins:{legend:{labels:{color:C.txt}}}, scales:scaleOpts() }
+  });
+
+  // ═══════════════════════════════════════════════════════════════
+  // DASHBOARD 3 — NCD COMPLIANCE (SPSS)
+  // ═══════════════════════════════════════════════════════════════
+  new Chart(document.getElementById('chart-ncd-radar'), {
+    type:'radar',
+    data:{ labels:['SMS Reminders','Mobile App','WhatsApp','IVR Calls','USSD','In-Person'],
+      datasets:[
+        { label:'Urban LMICs', data:[72,85,78,60,55,90],
+          borderColor:C.teal, backgroundColor:'rgba(0,201,167,0.15)', pointBackgroundColor:C.teal, pointRadius:4 },
+        { label:'Rural LMICs', data:[65,58,50,74,82,88],
+          borderColor:C.mint, backgroundColor:'rgba(94,234,212,0.1)', pointBackgroundColor:C.mint, pointRadius:4 }
+      ]},
+    options:{ responsive:true, plugins:{legend:{labels:{color:C.txt}}},
+      scales:{ r:{ grid:{color:C.grid}, angleLines:{color:C.grid},
+        pointLabels:{color:C.txt,font:{size:10}}, ticks:{display:false}, min:0, max:100 }}}
+  });
+
+  new Chart(document.getElementById('chart-ncd-bar'), {
+    type:'bar',
+    data:{ labels:['Hypertension','Diabetes','Asthma','CKD','Cancer Screening','HIV/ART'],
+      datasets:[
+        { label:'Before Intervention', data:[42,38,51,35,28,62],
+          backgroundColor:'rgba(74,85,104,0.7)', borderRadius:4 },
+        { label:'After Intervention',  data:[71,68,79,60,55,88],
+          backgroundColor:'rgba(0,201,167,0.82)', borderRadius:4 }
+      ]},
+    options:{ responsive:true, plugins:{legend:{labels:{color:C.txt}}}, scales:scaleOpts(v=>v+'%') }
+  });
+
+  const ncdYears = ['2018','2019','2020','2021','2022','2023','2024','2025'];
+  new Chart(document.getElementById('chart-ncd-trend'), {
+    type:'line',
+    data:{ labels:ncdYears, datasets:[
+      { label:'SMS-based platforms', data:[18,24,30,28,38,50,62,71],
+        borderColor:C.teal, backgroundColor:C.teal2, fill:true, tension:0.4, pointRadius:4 },
+      { label:'Mobile App platforms', data:[8,14,20,35,48,60,74,85],
+        borderColor:C.mint, backgroundColor:'rgba(94,234,212,0.08)', fill:true, tension:0.4, pointRadius:4 },
+      { label:'USSD/IVR',            data:[30,34,38,36,42,52,58,64],
+        borderColor:'rgba(167,139,250,0.8)', backgroundColor:'rgba(167,139,250,0.08)', fill:true, tension:0.4, pointRadius:4 }
+    ]},
+    options:{ responsive:true, plugins:{legend:{labels:{color:C.txt}}},
+      scales:scaleOpts(v=>v+'%') }
+  });
+
+  // ═══════════════════════════════════════════════════════════════
+  // DASHBOARD 4 — TELEMEDICINE
+  // ═══════════════════════════════════════════════════════════════
+  const weeks = ['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5','Wk 6','Wk 7','Wk 8'];
+  new Chart(document.getElementById('chart-tele-bar'), {
+    type:'bar',
+    data:{ labels:weeks, datasets:[
+      { label:'General Medicine', data:[42,55,48,62,58,70,65,78], backgroundColor:'rgba(0,201,167,0.8)', borderRadius:4 },
+      { label:'Cardiology',       data:[18,22,20,28,25,32,30,35], backgroundColor:'rgba(96,165,250,0.75)', borderRadius:4 },
+      { label:'Psychiatry',       data:[14,18,16,22,20,26,24,28], backgroundColor:'rgba(167,139,250,0.7)', borderRadius:4 },
+      { label:'Paediatrics',      data:[22,28,24,34,30,38,36,42], backgroundColor:'rgba(251,191,36,0.7)', borderRadius:4 }
+    ]},
+    options:{ responsive:true, plugins:{legend:{labels:{color:C.txt}}}, scales:scaleOpts() }
+  });
+
+  new Chart(document.getElementById('chart-tele-pie'), {
+    type:'doughnut',
+    data:{ labels:['Resolved Remotely','Referred In-Person','Follow-Up Booked','Prescription Only','Emergency Escalated'],
+      datasets:[{ data:[54,18,14,10,4],
+        backgroundColor:['rgba(0,201,167,0.85)','rgba(96,165,250,0.75)','rgba(251,191,36,0.75)','rgba(167,139,250,0.7)','rgba(248,113,113,0.7)'],
+        borderColor:'#132030', borderWidth:2 }]},
+    options:{ cutout:'65%', plugins:{
+      legend:{ position:'bottom', labels:{color:C.txt,padding:8,boxWidth:10} }
+    }}
+  });
+
+  new Chart(document.getElementById('chart-tele-access'), {
+    type:'bar',
+    data:{ labels:['Smartphone App','WhatsApp Video','SMS/USSD','Tablet (Facility)','Laptop/Desktop'],
+      datasets:[{ label:'Patients (%)',
+        data:[38,28,16,12,6],
+        backgroundColor:'rgba(0,201,167,0.75)', borderRadius:4 }]},
+    options:{ indexAxis:'y', responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{ x:{min:0,max:50, grid:{color:C.grid}, ticks:{color:C.txt,callback:v=>v+'%'}},
+               y:{grid:{color:C.grid},ticks:{color:C.txt}} }}
+  });
+
+  // Live telemedicine counter
+  let consultTotal = 1284, todaySess = 12;
+  setInterval(() => {
+    if(Math.random()>0.6){ todaySess++; consultTotal++; }
+    document.getElementById('kpi-consults').textContent = consultTotal.toLocaleString();
+    document.getElementById('kpi-today2').textContent = todaySess;
+  }, 5000);
+  // ── Hamburger menu ──────────────────────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeNav() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  </script>
 </body>
 </html>
