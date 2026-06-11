@@ -102,13 +102,16 @@
     .hero {
       min-height: 100vh;
       display: flex; align-items: center;
-      padding: 10rem 6vw 6rem;
+      padding: 6rem 6vw 4rem;
     }
     .hero-inner {
-      max-width: 1000px; width: 100%;
-      display: flex; align-items: center; gap: 4rem;
+      max-width: 1100px; width: 100%;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      margin: 0 auto;
     }
-    .hero-text { flex: 1; }
+    .hero-text { flex: 1; max-width: 520px; }
     /* ── ANIMATED HERO PHOTO ── */
     .hero-photo-scene {
       flex-shrink: 0;
@@ -226,25 +229,134 @@
       50%      { transform: translateY(-8px); }
     }
 
+    /* ── GALLERY ── */
+    #gallery { background: rgba(0,0,0,0.2); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .gallery-item {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,201,167,0.1);
+      cursor: pointer;
+      aspect-ratio: 4/3;
+      background: var(--card-bg);
+    }
+    .gallery-item:first-child,
+    .gallery-item:nth-child(4) {
+      grid-column: span 1;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .gallery-item:hover img { transform: scale(1.07); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.2) 55%, transparent 100%);
+      opacity: 0; transition: opacity 0.3s ease;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 1.2rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--off-white); margin-bottom: 0.3rem;
+      text-align: left;
+    }
+    .gallery-overlay p {
+      font-size: 0.73rem; color: rgba(232,237,242,0.7);
+      line-height: 1.4; text-align: left !important;
+    }
+    .gallery-tag {
+      display: inline-block;
+      background: rgba(0,201,167,0.18); color: var(--teal);
+      font-size: 0.68rem; font-weight: 600;
+      padding: 0.18rem 0.55rem; border-radius: 10px;
+      margin-bottom: 0.5rem; width: fit-content;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(5,10,18,0.96);
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      position: relative; max-width: 900px; width: 100%;
+      animation: lb-in 0.25s ease;
+    }
+    @keyframes lb-in { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+    .lightbox-inner img {
+      width: 100%; border-radius: var(--radius);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      max-height: 80vh; object-fit: contain;
+    }
+    .lb-caption {
+      margin-top: 1rem; text-align: center;
+    }
+    .lb-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600; color: var(--off-white);
+      text-align: center; margin-bottom: 0.3rem;
+    }
+    .lb-caption p {
+      font-size: 0.82rem; color: rgba(232,237,242,0.6);
+      text-align: center !important; max-width: 600px; margin: 0 auto;
+    }
+    .lb-close {
+      position: absolute; top: -2rem; right: 0;
+      background: none; border: none; color: var(--off-white);
+      font-size: 1.6rem; cursor: pointer; opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .lb-close:hover { opacity: 1; color: var(--teal); }
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,201,167,0.15); border: 1px solid rgba(0,201,167,0.3);
+      color: var(--teal); border-radius: 50%;
+      width: 42px; height: 42px; font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; z-index: 10;
+    }
+    .lb-nav:hover { background: rgba(0,201,167,0.3); }
+    .lb-prev { left: -56px; }
+    .lb-next { right: -56px; }
     @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .lb-prev { left: -44px; }
+      .lb-next { right: -44px; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-overlay { opacity: 1; }
+      .lb-prev, .lb-next { display: none; }
+    }
       /* Nav */
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      /* Hero — stack photo above text, centred */
-      .hero { padding: 7rem 5vw 4rem; min-height: auto; }
+      /* Hero — stack: photo top centre, text below */
+      .hero { padding: 5.5rem 5vw 3rem; min-height: auto; }
       .hero-inner {
         flex-direction: column; align-items: center;
-        gap: 2.5rem; text-align: center;
+        gap: 2rem; text-align: left;
       }
-      .hero-text { order: 2; }
+      .hero-text { order: 2; width: 100%; }
       .hero-photo-scene {
         order: 1;
-        width: 200px; height: 200px;
+        width: 190px; height: 190px;
         margin: 0 auto;
       }
       .tech-badge { display: none; }
-      .hero-ctas { justify-content: center; }
+      .hero-ctas { justify-content: flex-start; }
       .tagline { max-width: 100%; }
 
       /* About */
@@ -270,7 +382,7 @@
       .data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
       /* Section padding */
-      section { padding: 4rem 5vw; }
+      section { padding: 2.8rem 5vw; }
 
       /* Projects */
       .projects-grid { grid-template-columns: 1fr; }
@@ -315,10 +427,11 @@
       margin-bottom: 1rem; font-weight: 600;
     }
     .tagline {
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
       color: rgba(232,237,242,0.7);
-      max-width: 600px; line-height: 1.7;
-      margin-bottom: 2.2rem;
+      max-width: 520px; line-height: 1.75;
+      margin-bottom: 2rem;
+      text-align: left !important;
     }
     .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn {
@@ -338,27 +451,37 @@
     .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
 
     /* ── SECTION BASE ── */
-    section { padding: 6rem 6vw; }
+    section { padding: 3.5rem 6vw; }
     .section-label {
       font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--teal); margin-bottom: 0.6rem;
+      color: var(--teal); margin-bottom: 0.5rem;
     }
     h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-      font-weight: 700; margin-bottom: 0.8rem; line-height: 1.15;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700; margin-bottom: 0.6rem; line-height: 1.15;
     }
     .section-divider {
       width: 40px; height: 3px; background: var(--teal);
-      border-radius: 2px; margin-bottom: 2.5rem;
+      border-radius: 2px; margin-bottom: 2rem;
     }
+    /* Justify all paragraph text across sections */
+    p, li, .tagline, .about-text p, .timeline-bullets li,
+    .project-card p, .pub-item p, .contact-inner p {
+      text-align: justify;
+      text-justify: inter-word;
+    }
+    /* Keep headings, labels, tags, nav left-aligned */
+    h1, h2, h3, h4, .eyebrow, .section-label, .hero-role,
+    .nav-name, .skill-tag, .project-tag, .kpi-lbl, .kpi-delta,
+    .tool-name, .tool-level, .inst, .year, .journal { text-align: left; }
 
     /* ── ABOUT ── */
     .about-grid {
-      display: grid; grid-template-columns: 1.3fr 1fr; gap: 3.5rem;
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem;
       align-items: start;
     }
-    .about-text p { color: rgba(232,237,242,0.72); margin-bottom: 1rem; font-size: 0.97rem; }
+    .about-text p { color: rgba(232,237,242,0.72); margin-bottom: 0.8rem; font-size: 0.95rem; }
     .skills-list {
       display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.5rem;
     }
@@ -635,6 +758,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#analytics">Analytics</a></li>
       <li><a href="#education">Education</a></li>
+      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Open menu">
@@ -649,6 +773,7 @@
     <a href="#projects"    onclick="closeNav()">Projects</a>
     <a href="#analytics"   onclick="closeNav()">Analytics</a>
     <a href="#education"   onclick="closeNav()">Education</a>
+    <a href="#gallery"     onclick="closeNav()">Gallery</a>
     <a href="#contact"     onclick="closeNav()">Contact</a>
   </div>
 
@@ -1053,6 +1178,85 @@
     </div>
   </section>
 
+  <!-- GALLERY -->
+  <section id="gallery">
+    <p class="section-label">In The Field</p>
+    <h2>Activities &amp; Gallery</h2>
+    <div class="section-divider"></div>
+
+    <div class="gallery-grid">
+
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="gallery-1.jpeg" alt="CHP Telemedicine Sensitization, Dagoretti" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">🏥 Telemedicine</span>
+          <h4>CHP Sensitization — Dagoretti Sub-County</h4>
+          <p>Community Health Promoters telemedicine sensitization at Dagoretti Sub-County Level IV Hospital, Nairobi County.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="gallery-2.jpeg" alt="Research & Data Collection Training, BGC Hub Machakos" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">📊 Data Collection</span>
+          <h4>Research &amp; Data Training — BGC Hub, Machakos</h4>
+          <p>Research methodology and mobile data collection training with the team at Bob Grogan Consulting Hub, Machakos Town.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="gallery-3.jpeg" alt="Telemedicine System Training, Mama Lucy Kibaki Hospital" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">📡 System Onboarding</span>
+          <h4>Telemedicine System Training — Mama Lucy Kibaki Hospital</h4>
+          <p>Training nurses, care coordinators, doctors and consultants on navigating the telemedicine system at Mama Lucy Kibaki Hospital, Kayole, Embakasi.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <img src="gallery-4.jpeg" alt="Installing SIP Calling System, BGC Hub Machakos" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">☎️ SIP / PBX</span>
+          <h4>Installing Calling System — BGC Hub, Machakos</h4>
+          <p>Setting up and configuring SIP-line calling systems for corporate clients at Bob Grogan Consulting Hub, Machakos.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <img src="gallery-5.jpeg" alt="Isaac Mbuvi at Moi Avenue, Nairobi CBD" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">🌆 Nairobi</span>
+          <h4>Fresh Air Break — Moi Avenue, Nairobi CBD</h4>
+          <p>Catching a breath of fresh air at Moi Avenue in Nairobi CBD between project engagements.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(5)">
+        <img src="gallery-6.jpeg" alt="CHP Telemedicine Sensitization, Dagoretti" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="gallery-tag">🏥 Telemedicine</span>
+          <h4>CHP Sensitization — Dagoretti (Session 2)</h4>
+          <p>Second session of Community Health Promoters telemedicine sensitization at Dagoretti Sub-County Level IV Hospital, Nairobi County.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+    <div class="lightbox-inner">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <button class="lb-nav lb-prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8249;</button>
+      <button class="lb-nav lb-next" onclick="event.stopPropagation(); stepLightbox(1)">&#8250;</button>
+      <img id="lb-img" src="" alt="" />
+      <div class="lb-caption">
+        <h4 id="lb-title"></h4>
+        <p id="lb-desc"></p>
+      </div>
+    </div>
+  </div>
+
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner">
@@ -1318,6 +1522,47 @@
     document.getElementById('kpi-consults').textContent = consultTotal.toLocaleString();
     document.getElementById('kpi-today2').textContent = todaySess;
   }, 5000);
+  // ── Gallery lightbox ────────────────────────────────────────
+  const galleryData = [
+    { src: 'gallery-1.jpeg', title: 'CHP Sensitization — Dagoretti Sub-County Level IV Hospital', desc: 'Community Health Promoters telemedicine sensitization at Dagoretti Sub-County Level IV Hospital, Nairobi County.' },
+    { src: 'gallery-2.jpeg', title: 'Research & Data Collection Training — BGC Hub, Machakos', desc: 'Research methodology and mobile data collection training with the team at Bob Grogan Consulting Hub, Machakos Town.' },
+    { src: 'gallery-3.jpeg', title: 'Telemedicine System Training — Mama Lucy Kibaki Hospital, Kayole', desc: 'Training nurses, care coordinators, doctors and consultants on navigating the telemedicine system at Mama Lucy Kibaki Hospital, Kayole, Embakasi Constituency, Nairobi.' },
+    { src: 'gallery-4.jpeg', title: 'Installing SIP Calling System — BGC Hub, Machakos', desc: 'Configuring and deploying SIP-line calling infrastructure for corporate clients at Bob Grogan Consulting Hub, Machakos.' },
+    { src: 'gallery-5.jpeg', title: 'Fresh Air Break — Moi Avenue, Nairobi CBD', desc: 'Taking a breath of fresh air at Moi Avenue, Nairobi Central Business District, between project field engagements.' },
+    { src: 'gallery-6.jpeg', title: 'CHP Sensitization Session 2 — Dagoretti Sub-County', desc: 'Second session of Community Health Promoters telemedicine sensitization at Dagoretti Sub-County Level IV Hospital, Nairobi County.' },
+  ];
+  let currentLb = 0;
+  function openLightbox(i) {
+    currentLb = i;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeLightboxOutside(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  }
+  function stepLightbox(dir) {
+    currentLb = (currentLb + dir + galleryData.length) % galleryData.length;
+    updateLightbox();
+  }
+  function updateLightbox() {
+    const d = galleryData[currentLb];
+    document.getElementById('lb-img').src   = d.src;
+    document.getElementById('lb-img').alt   = d.title;
+    document.getElementById('lb-title').textContent = d.title;
+    document.getElementById('lb-desc').textContent  = d.desc;
+  }
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowRight')  stepLightbox(1);
+    if (e.key === 'ArrowLeft')   stepLightbox(-1);
+  });
+
   // ── Hamburger menu ──────────────────────────────────────────
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobile-nav');
