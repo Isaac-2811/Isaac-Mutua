@@ -98,20 +98,83 @@
     }
     .mobile-nav a:hover { color: var(--teal); opacity: 1; }
 
+    /* ── BODY FONT: Times New Roman size 12 for paragraphs ── */
+    body {
+      background: var(--navy);
+      color: var(--off-white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    p, li, .tagline, .about-text p, .timeline-bullets li,
+    .project-card p, .pub-item p, .contact-inner p,
+    .dash-meta, .company, .edu-item .year, .edu-item .inst {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+    /* Keep headings, UI elements, nav in Inter/Space Grotesk */
+    h1, h2, h3, h4, .eyebrow, .section-label, .hero-role,
+    .nav-name, .skill-tag, .project-tag, .kpi-lbl, .kpi-delta,
+    .tool-name, .tool-level, .inst, .year, .journal,
+    .btn, .dash-tab, .flt, .dt-header, .data-table th,
+    .data-table td, .gallery-overlay h4, .gallery-overlay p,
+    .stat-card .lbl { text-align: left; font-family: 'Inter', sans-serif; }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center;
       padding: 6rem 6vw 4rem;
+      position: relative; overflow: hidden;
+    }
+    /* Canvas for animated background shapes */
+    #hero-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      opacity: 0.45;
     }
     .hero-inner {
+      position: relative; z-index: 1;
       max-width: 1100px; width: 100%;
       display: flex; align-items: center;
       justify-content: space-between;
-      gap: 2rem;
-      margin: 0 auto;
+      gap: 3rem; margin: 0 auto;
     }
-    .hero-text { flex: 1; max-width: 520px; }
+
+    /* Left column: photo + name below */
+    .hero-photo-col {
+      display: flex; flex-direction: column;
+      align-items: center; flex-shrink: 0;
+      gap: 1.2rem;
+    }
+    .hero-name-below {
+      text-align: center;
+    }
+    .name-highlight-block {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--teal), #5eead4, var(--teal));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+      margin-bottom: 0.3rem;
+    }
+    .name-sub {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; color: var(--slate);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* Right column: text */
+    .hero-text { flex: 1; max-width: 500px; }
     /* ── ANIMATED HERO PHOTO ── */
     .hero-photo-scene {
       flex-shrink: 0;
@@ -233,12 +296,12 @@
     #gallery { background: rgba(0,0,0,0.2); }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
     }
     .gallery-item {
       position: relative; overflow: hidden;
-      border-radius: var(--radius);
+      border-radius: 8px;
       border: 1px solid rgba(0,201,167,0.1);
       cursor: pointer;
       aspect-ratio: 4/3;
@@ -253,6 +316,7 @@
       object-fit: cover; object-position: center top;
       transition: transform 0.5s ease;
       display: block;
+      background: var(--card-bg);
     }
     .gallery-item:hover img { transform: scale(1.07); }
     .gallery-overlay {
@@ -348,14 +412,12 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      /* Hero — photo centred on top, text below */
+      /* Hero — photo+name on top centred, text below */
       .hero { padding: 5.5rem 5vw 3rem; min-height: auto; }
-      .hero-inner {
-        flex-direction: column; align-items: center;
-        gap: 2rem; text-align: left;
-      }
-      .hero-text { order: 2; width: 100%; }
-      .hero-photo-scene { order: 1; width: 190px; height: 190px; margin: 0 auto; }
+      .hero-inner { flex-direction: column; align-items: center; gap: 1.8rem; }
+      .hero-photo-col { order: 1; width: 100%; display: flex; flex-direction: column; align-items: center; }
+      .hero-photo-scene { width: 170px; height: 170px; margin: 0 auto; }
+      .hero-text { order: 2; width: 100%; text-align: left; }
       .tech-badge { display: none; }
       .hero-ctas { justify-content: flex-start; }
       .tagline { max-width: 100%; }
@@ -395,20 +457,20 @@
       .edu-pub-grid { grid-template-columns: 1fr; }
 
       /* Gallery */
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
       .lb-prev { left: -40px; }
       .lb-next { right: -40px; }
     }
 
     /* Small phones (≤ 480px) */
     @media (max-width: 480px) {
-      h1 { font-size: 2.1rem; }
+      h1 { font-size: 1.6rem; white-space: normal; }
       .hero-photo-scene { width: 160px; height: 160px; }
       .stat-card .num { font-size: 1.8rem; }
       .btn { padding: 0.65rem 1.3rem; font-size: 0.85rem; }
       .kpi-row { grid-template-columns: 1fr 1fr; }
       .about-stats { grid-template-columns: 1fr 1fr; }
-      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
       .gallery-overlay { opacity: 1; }
       .lb-prev, .lb-next { display: none; }
       .tool-grid { grid-template-columns: repeat(2, 1fr); }
@@ -434,9 +496,16 @@
     }
     h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.6rem, 7vw, 5rem);
-      font-weight: 700; line-height: 1.05;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; line-height: 1.2;
       margin-bottom: 0.4rem;
+      white-space: nowrap;
+    }
+    .hero h1 {
+      text-decoration: underline;
+      text-decoration-color: var(--teal);
+      text-underline-offset: 6px;
+      text-decoration-thickness: 2px;
     }
     .name-highlight {
       display: inline;
@@ -711,15 +780,16 @@
     .kpi-delta.neutral { color: var(--slate); }
 
     /* Charts grid */
-    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 1.2rem; }
     .chart-card {
       background: var(--card-bg); border: 1px solid rgba(0,201,167,0.1);
-      border-radius: var(--radius); padding: 1.3rem;
+      border-radius: var(--radius); padding: 1rem;
     }
     .chart-card h4 {
-      font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 600;
-      color: rgba(232,237,242,0.8); margin-bottom: 1rem;
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 600;
+      color: rgba(232,237,242,0.8); margin-bottom: 0.7rem; text-align: left;
     }
+    .chart-card canvas { max-height: 160px; }
     .chart-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
     .chart-top h4 { margin-bottom: 0; }
     .filter-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
@@ -809,10 +879,34 @@
   </div>
 
   <section class="hero">
+    <!-- Animated background canvas -->
+    <canvas id="hero-canvas"></canvas>
+
     <div class="hero-inner">
+      <!-- LEFT: animated photo + name below it -->
+      <div class="hero-photo-col">
+        <div class="hero-photo-scene">
+          <div class="orbit-ring2"></div>
+          <div class="orbit-ring"></div>
+          <div class="glow-pulse"></div>
+          <div class="hero-photo-wrap">
+            <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" />
+          </div>
+          <span class="tech-badge">⚡ Power BI</span>
+          <span class="tech-badge">🐍 Python</span>
+          <span class="tech-badge">☁️ Node.js</span>
+          <span class="tech-badge">📊 SPSS</span>
+        </div>
+        <div class="hero-name-below">
+          <span class="name-highlight-block">Isaac M. Mutua</span>
+          <span class="name-sub">IT Specialist &amp; Data Analyst</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: text content -->
       <div class="hero-text">
-        <p class="eyebrow">IT Specialist &amp; Data Analyst · Machakos, Kenya</p>
-        <h1><span class="name-highlight">Isaac Mbuvi Mutua</span></h1>
+        <p class="eyebrow">Machakos, Kenya · Full Stack Architect</p>
+        <h1>ICT Leadership meets <span class="name-highlight">Data Science</span></h1>
         <p class="hero-role">Full Stack Architect &amp; ICT Leader</p>
         <p class="tagline">
           Bridging technical infrastructure and strategic data intelligence — from high-resilience
@@ -823,18 +917,6 @@
           <a href="#projects" class="btn btn-primary">View My Work</a>
           <a href="#contact" class="btn btn-ghost">Get In Touch</a>
         </div>
-      </div>
-      <div class="hero-photo-scene">
-        <div class="orbit-ring2"></div>
-        <div class="orbit-ring"></div>
-        <div class="glow-pulse"></div>
-        <div class="hero-photo-wrap">
-          <img src="Profile-2026.jpeg" alt="Isaac Mbuvi Mutua" />
-        </div>
-        <span class="tech-badge">⚡ Power BI</span>
-        <span class="tech-badge">🐍 Python</span>
-        <span class="tech-badge">☁️ Node.js</span>
-        <span class="tech-badge">📊 SPSS</span>
       </div>
     </div>
   </section>
@@ -1593,6 +1675,126 @@
     if (e.key === 'ArrowRight')  stepLightbox(1);
     if (e.key === 'ArrowLeft')   stepLightbox(-1);
   });
+
+  // ── Hero canvas: floating shapes + particles ────────────────
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, shapes, particles;
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+
+    function randomBetween(a, b) { return a + Math.random() * (b - a); }
+
+    function initShapes() {
+      shapes = [];
+      const count = Math.min(14, Math.floor(W / 90));
+      const types = ['circle', 'triangle', 'square', 'diamond', 'hexagon'];
+      for (let i = 0; i < count; i++) {
+        shapes.push({
+          type:  types[Math.floor(Math.random() * types.length)],
+          x:     randomBetween(0, W),
+          y:     randomBetween(0, H),
+          size:  randomBetween(18, 52),
+          vx:    randomBetween(-0.25, 0.25),
+          vy:    randomBetween(-0.25, 0.25),
+          rot:   randomBetween(0, Math.PI * 2),
+          rotV:  randomBetween(-0.005, 0.005),
+          alpha: randomBetween(0.06, 0.22),
+          color: Math.random() > 0.5 ? '#00C9A7' : '#5eead4',
+        });
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(40, Math.floor(W / 28));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: randomBetween(0, W), y: randomBetween(0, H),
+          r: randomBetween(1, 2.5),
+          vx: randomBetween(-0.15, 0.15),
+          vy: randomBetween(-0.15, 0.15),
+          alpha: randomBetween(0.1, 0.4),
+        });
+      }
+    }
+
+    function drawHex(ctx, x, y, r) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i - Math.PI / 6;
+        i === 0 ? ctx.moveTo(x + r * Math.cos(a), y + r * Math.sin(a))
+                : ctx.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
+      }
+      ctx.closePath();
+    }
+
+    function drawShape(s) {
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.rotate(s.rot);
+      ctx.globalAlpha = s.alpha;
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      switch (s.type) {
+        case 'circle':
+          ctx.arc(0, 0, s.size / 2, 0, Math.PI * 2); break;
+        case 'square':
+          ctx.rect(-s.size/2, -s.size/2, s.size, s.size); break;
+        case 'triangle':
+          ctx.moveTo(0, -s.size/2);
+          ctx.lineTo(s.size/2, s.size/2);
+          ctx.lineTo(-s.size/2, s.size/2);
+          ctx.closePath(); break;
+        case 'diamond':
+          ctx.moveTo(0, -s.size/2);
+          ctx.lineTo(s.size/2, 0);
+          ctx.lineTo(0, s.size/2);
+          ctx.lineTo(-s.size/2, 0);
+          ctx.closePath(); break;
+        case 'hexagon':
+          drawHex(ctx, 0, 0, s.size / 2); break;
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Particles
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,201,167,${p.alpha})`;
+        ctx.fill();
+      });
+
+      // Shapes
+      shapes.forEach(s => {
+        s.x += s.vx; s.y += s.vy; s.rot += s.rotV;
+        if (s.x < -60)  s.x = W + 60;
+        if (s.x > W+60) s.x = -60;
+        if (s.y < -60)  s.y = H + 60;
+        if (s.y > H+60) s.y = -60;
+        drawShape(s);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => { resize(); initShapes(); initParticles(); });
+    resize(); initShapes(); initParticles(); animate();
+  })();
 
   // ── Hamburger menu ──────────────────────────────────────────
   const hamburger = document.getElementById('hamburger');
