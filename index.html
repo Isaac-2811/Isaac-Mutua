@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Isaac Mbuvi Mutua — IT Specialist & Data Analyst</title>
+  <title>Isaac M. Mutua — Technology & Digital Transformation Professional</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -692,6 +692,9 @@
       transition: border-color 0.2s, color 0.2s;
     }
     .social-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .social-btn--whatsapp:hover  { border-color: #25D366; color: #25D366; }
+    .social-btn--instagram:hover { border-color: #E1306C; color: #E1306C; }
+    .social-btn svg { flex-shrink: 0; }
 
     /* ── FOOTER ── */
     footer {
@@ -844,6 +847,152 @@
       .tool-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
+
+  <!-- ===== Type scale + responsive tuning ===== -->
+  <style>
+    /* Fluid root size: every font-size on this page is in rem, so this scales
+       all text together. ~16.9px on a 360px Android up to 20px on a large PC. */
+    html { font-size: clamp(16.5px, 0.227vw + 16.1px, 20px); }
+    body { font-size: 1rem; }
+
+    /* Never let anything push the page sideways on a phone */
+    body { max-width: 100%; overflow-x: hidden; }
+    img, video, canvas, svg, table { max-width: 100%; }
+    .data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Hero was reserving a full viewport height for less content */
+    .hero { min-height: auto; padding: 5rem 6vw 4rem; }
+    .hero-inner { gap: 2.5rem; }
+
+    /* ---- Small laptops and tablets in landscape (<= 1024px) ---- */
+    @media (max-width: 1024px) {
+      .hero { padding: 4.5rem 5vw 3.5rem; }
+      .hero-inner { gap: 2rem; }
+      .hero-photo-scene { width: 250px; height: 250px; }
+      section { padding: 3.2rem 5vw; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-card[style*="span 2"] { grid-column: span 1; }
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ---- Tablets in portrait (<= 900px) ---- */
+    @media (max-width: 900px) {
+      .hero-photo-scene { width: 220px; height: 220px; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ---- Android phones (<= 560px) ---- */
+    @media (max-width: 560px) {
+      .hero { padding: 4rem 5vw 2.5rem; }
+      .hero-photo-scene { width: 180px; height: 180px; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-ctas { flex-wrap: wrap; gap: 0.7rem; }
+      .hero-ctas .btn { flex: 1 1 auto; text-align: center; }
+      .social-links { flex-wrap: wrap; }
+    }
+
+    /* ---- Hero layout ---- */
+    /* The heading was set to white-space: nowrap, so it ran off the right edge
+       instead of wrapping. Let it wrap at every width. */
+    h1 { white-space: normal; }
+
+    @media (min-width: 769px) {
+      .hero { min-height: 80vh; padding: 5rem 4vw 4rem; }
+
+      /* Columns sit next to each other with a fixed gap rather than being
+         pushed to opposite edges, which was what opened the gulf in the middle */
+      .hero-inner {
+        max-width: 1240px;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 3.5rem;
+      }
+
+      /* Photo column aligns to its own left edge */
+      .hero-photo-col { align-items: flex-start; }
+
+      /* The strapline is 45 characters; 320px forced an awkward two-line break.
+         With the column left-aligned, a wider text block does not shift the
+         circle, so give it room to sit on one line. */
+      .hero-name-below { text-align: left; max-width: 27rem; }
+      .name-sub {
+        font-size: clamp(0.62rem, 0.72vw, 0.74rem);
+        letter-spacing: 0.045em;
+        line-height: 1.5;
+        white-space: nowrap;
+      }
+
+      /* Text column takes the remaining width instead of being capped at 500px */
+      .hero-text { flex: 1 1 0; min-width: 0; max-width: 42rem; }
+
+      .tagline {
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+        max-width: 100%;
+      }
+    }
+
+    @media (min-width: 1500px) {
+      .hero-inner { max-width: 1340px; gap: 4rem; }
+    }
+
+    @media (max-width: 768px) {
+      .name-sub { white-space: normal; line-height: 1.55; }
+      .hero-name-below { max-width: 22rem; margin-inline: auto; }
+    }
+
+    /* ---- Touch devices: tap targets big enough to hit ---- */
+    @media (pointer: coarse) {
+      .btn, .social-btn, .dash-tab, .nav-links a, .reel-nav, .lb-prev, .lb-next {
+        min-height: 44px;
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+    }
+  </style>
+
+  <!-- ===== Hero background ===== -->
+  <style>
+    .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+
+    .hero-bg-slide {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center 22%;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 2s ease-in-out;
+      animation: bg-drift 24s ease-in-out infinite alternate;
+    }
+    .hero-bg-slide.is-active { opacity: 1; }
+
+    @keyframes bg-drift {
+      from { transform: scale(1.06); }
+      to   { transform: scale(1.14); }
+    }
+
+    /* Readability veil: dark enough for white text over any photo */
+    .hero-bg-veil {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(105deg, rgba(8,12,17,0.93) 0%, rgba(8,12,17,0.80) 45%, rgba(8,12,17,0.62) 100%),
+        linear-gradient(to bottom, rgba(8,12,17,0.55) 0%, rgba(8,12,17,0.25) 40%, rgba(8,12,17,0.85) 100%);
+    }
+
+    @media (max-width: 880px) {
+      .hero-bg-slide { background-position: center 18%; }
+      .hero-bg-veil {
+        background: linear-gradient(to bottom, rgba(8,12,17,0.82) 0%, rgba(8,12,17,0.72) 45%, rgba(8,12,17,0.92) 100%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg-slide { animation: none; transform: none; transition: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -879,6 +1028,13 @@
   </div>
 
   <section class="hero">
+    <!-- Two-image hero background -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg-slide is-active" style="background-image:url('hero-bg-1.jpg')"></div>
+      <div class="hero-bg-slide" style="background-image:url('hero-bg-2.jpg')"></div>
+      <div class="hero-bg-veil"></div>
+    </div>
+
     <!-- Animated background canvas -->
     <canvas id="hero-canvas"></canvas>
 
@@ -899,19 +1055,19 @@
         </div>
         <div class="hero-name-below">
           <span class="name-highlight-block">Isaac M. Mutua</span>
-          <span class="name-sub">IT Specialist &amp; Data Analyst</span>
+          <span class="name-sub">Technology &amp; Digital Transformation Professional</span>
         </div>
       </div>
 
       <!-- RIGHT: text content -->
       <div class="hero-text">
-        <p class="eyebrow">Machakos, Kenya · Full Stack Architect</p>
-        <h1>ICT Leadership meets <span class="name-highlight">Data Science</span></h1>
-        <p class="hero-role">Full Stack Architect &amp; ICT Leader</p>
+        <p class="eyebrow">Nairobi, Kenya · ICT Specialist</p>
+        <h1>Enterprise ICT meets <span class="name-highlight">Data Science</span></h1>
+        <p class="hero-role">System Administration · Software Engineering · Data Science &amp; AI</p>
         <p class="tagline">
-          Bridging technical infrastructure and strategic data intelligence — from high-resilience
-          disaster management systems in Level 5 hospitals to full-stack healthcare platforms
-          built in React and Node.js.
+          Three years delivering enterprise ICT solutions, scalable web platforms and PBX, SIP and
+          VoIP communication systems — alongside field research and data collection for national
+          health programmes.
         </p>
         <div class="hero-ctas">
           <a href="#projects" class="btn btn-primary">View My Work</a>
@@ -919,6 +1075,7 @@
         </div>
       </div>
     </div>
+
   </section>
 
   <!-- ABOUT -->
@@ -926,17 +1083,19 @@
     <div class="about-grid">
       <div class="about-text">
         <p class="section-label">About Me</p>
-        <h2>ICT strategy meets data science</h2>
+        <h2>Technology, data and digital transformation</h2>
         <div class="section-divider"></div>
         <p>
-          I'm a visionary ICT leader with a strong command over technical infrastructure and
-          advanced data science. I specialize in orchestrating high-resilience Disaster Management
-          Plans and architecting enterprise-grade communication hubs using SIP lines and PBX frameworks.
+          I deliver enterprise ICT solutions, software applications, data analytics and digital
+          communication platforms. My work covers designing and deploying scalable web platforms,
+          implementing PBX, SIP and VoIP communication systems, and managing ICT infrastructure
+          across multi-department environments.
         </p>
         <p>
-          With experience spanning full-stack development, data pipelines, and healthcare ICT systems,
-          I bridge the gap between technical execution and strategic business intelligence. Currently
-          pursuing an MSc in Data Science at the Open University of Kenya.
+          Alongside the technical work, I lead field research and data collection for national
+          health programmes, and build the data workflows — Kobo Toolbox, SPSS, Power BI — that
+          turn that fieldwork into evidence. I hold a BSc in Information Technology and am currently
+          pursuing an MSc in Data Science at The Open University of Kenya.
         </p>
         <div class="skills-list">
           <span class="skill-tag">React</span>
@@ -951,10 +1110,13 @@
           <span class="skill-tag">LAN / WAN</span>
           <span class="skill-tag">CCTV Systems</span>
           <span class="skill-tag">RESTful APIs</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Canva / Adobe Express</span>
+          <span class="skill-tag">Digital Marketing</span>
         </div>
       </div>
       <div class="about-stats">
-        <div class="stat-card"><div class="num">2+</div><div class="lbl">Years Professional Experience</div></div>
+        <div class="stat-card"><div class="num">3+</div><div class="lbl">Years Professional Experience</div></div>
         <div class="stat-card"><div class="num">L5</div><div class="lbl">Hospital DMP Delivered</div></div>
         <div class="stat-card"><div class="num">1</div><div class="lbl">Peer-Reviewed Publication</div></div>
         <div class="stat-card"><div class="num">MSc</div><div class="lbl">Data Science (In Progress)</div></div>
@@ -980,13 +1142,28 @@
           <li>Architected and deployed SIP-line calling systems for corporate clients, enabling efficient wide-scale outreach and internal communication.</li>
           <li>Engineered internal web platforms using React and Node.js to track healthcare project performance and telemedicine access.</li>
           <li>Built data pipelines to migrate healthcare data from Kobo Toolbox to SPSS, facilitating the publication of systematic reviews in peer-reviewed journals.</li>
+          <li>Designed, built and shipped <a href="https://bghub.co.ke/" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);">bghub.co.ke</a> &mdash; the organisation's public site covering brands, careers, learning and news, linked through to the BG Learning Hub, WorkLog and member portals.</li>
         </ul>
       </div>
 
       <div class="timeline-item">
         <div class="timeline-header">
-          <h3>ICT Assistant</h3>
-          <span class="period">Previous Role</span>
+          <h3>Research Assistant (Data Collector)</h3>
+          <span class="period">June 2026</span>
+        </div>
+        <div class="company">National Syndemic Diseases Control Council (NSDCC), with NASCOP</div>
+        <ul class="timeline-bullets">
+          <li>Selected through a competitive national recruitment for the Programmatic Mapping and Size Estimation of Vulnerable Populations in Kenya, and deployed to assigned counties after a three-day standardisation and data quality training.</li>
+          <li>Conducted programmatic mapping and population size estimation for fisherfolk and long-distance truckers using standardised tools and digital data collection platforms.</li>
+          <li>Carried out EMR-based enumeration of HIV zero-discordant couples.</li>
+          <li>Worked to national ethical and regulatory requirements throughout &mdash; consent, confidentiality, de-identification and data quality assurance.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <h3>ICT Assistant (Intern)</h3>
+          <span class="period">2023</span>
         </div>
         <div class="company">Makueni County Government</div>
         <ul class="timeline-bullets">
@@ -1006,6 +1183,28 @@
     <h2>Projects</h2>
     <div class="section-divider"></div>
     <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-icon">🌐</div>
+        <h3>BGHUB Kenya &mdash; Corporate Website &amp; Digital Ecosystem</h3>
+        <p>Designed and built <a href="https://bghub.co.ke/" target="_blank" rel="noopener" style="color:#5eead4;text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);">bghub.co.ke</a>, a multi-page site with brand search and sector filtering, careers, news and stories &mdash; linked to the BG Learning Hub, WorkLog and member portals.</p>
+        <div class="project-tags">
+          <span class="project-tag">Web Platform</span>
+          <span class="project-tag">Front-End</span>
+          <span class="project-tag">Live Site</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">🗺️</div>
+        <h3>Programmatic Mapping &amp; Population Size Estimation &mdash; NSDCC</h3>
+        <p>Field data collection for a national study on the geographic distribution and size of vulnerable populations, informing HIV prevention and treatment programming, planning and resource allocation.</p>
+        <div class="project-tags">
+          <span class="project-tag">Field Research</span>
+          <span class="project-tag">Population Size Estimation</span>
+          <span class="project-tag">Public Health</span>
+        </div>
+      </div>
 
       <div class="project-card">
         <div class="project-icon">🏥</div>
@@ -1283,7 +1482,7 @@
             for treatment compliance in non-communicable diseases across LMICs.
           </p>
           <br>
-          <a href="https://doi.org/10.51244/IJRSI.2025.121500 0105P" class="pub-link" target="_blank" rel="noopener">
+          <a href="https://doi.org/10.51244/IJRSI.2025.1215000105P" class="pub-link" target="_blank" rel="noopener">
             View Publication →
           </a>
         </div>
@@ -1382,8 +1581,20 @@
       </p>
       <div class="social-links">
         <a href="mailto:isaacmbuvi084@gmail.com" class="social-btn">✉️ Email Me</a>
-        <a href="https://github.com/yourusername" class="social-btn" target="_blank" rel="noopener">🐙 GitHub</a>
-        <a href="https://linkedin.com/in/yourusername" class="social-btn" target="_blank" rel="noopener">💼 LinkedIn</a>
+        <a href="https://github.com/isaac-2811" class="social-btn" target="_blank" rel="noopener">🐙 GitHub</a>
+        <!-- TODO: paste your real LinkedIn URL below, then delete these two comment markers.
+        <a href="https://www.linkedin.com/in/YOUR-HANDLE" class="social-btn" target="_blank" rel="noopener">💼 LinkedIn</a>
+        -->
+        <a href="https://wa.me/254714560246?text=Hi%20Isaac%2C%20I%20found%20your%20portfolio" class="social-btn social-btn--whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.48-1.77-1.66-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.38-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.78 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.02a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.25-4.36c0-4.54 3.69-8.23 8.23-8.23 4.53 0 8.22 3.69 8.22 8.23 0 4.54-3.69 8.22-8.24 8.22z"/></svg>
+          WhatsApp
+        </a>
+        <!-- TODO: replace YOUR-HANDLE below with your real Instagram username, then delete these two comment markers.
+        <a href="https://www.instagram.com/YOUR-HANDLE" class="social-btn social-btn--instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+        -->
         <a href="tel:+254714560246" class="social-btn">📞 +254 714 560 246</a>
       </div>
     </div>
@@ -1391,7 +1602,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2026 Isaac Mbuvi Mutua · IT Specialist &amp; Data Analyst · Machakos, Kenya · Hosted on <a href="https://pages.github.com" style="color:var(--teal);text-decoration:none;">GitHub Pages</a></p>
+    <p>© 2026 Isaac M. Mutua · ICT Specialist · Nairobi, Kenya · Hosted on <a href="https://pages.github.com" style="color:var(--teal);text-decoration:none;">GitHub Pages</a></p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -1810,5 +2021,21 @@
     document.body.style.overflow = '';
   }
   </script>
+  <!-- ===== Hero background ===== -->
+  <script>
+  (function () {
+    var slides = document.querySelectorAll('.hero-bg-slide');
+    if (slides.length < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var i = 0;
+    setInterval(function () {
+      slides[i].classList.remove('is-active');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active');
+    }, 8000);
+  })();
+  </script>
+
 </body>
 </html>
